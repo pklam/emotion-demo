@@ -60,6 +60,7 @@
             console.log(scores);
         })
         .fail(function(e) {
+            alert('Error: ' + e.responseText);
             console.error(e);
            
         });
