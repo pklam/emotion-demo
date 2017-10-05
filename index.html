@@ -8,10 +8,13 @@
 <body style="background-color:#C8102E;">
     <div class="container" style="text-align:center;">
     <form id="submit-form" style="width:80%; height:100vh; margin: 0 auto; background-color:white; padding: 10px;">
-            <h1 style="color:#888B8D;">MISSO Emotion Reader :)</h1>
+            <h1 style="color:#888B8D; margin-top: 25px;">MISSO Emotion Reader :)</h1>
         <div class="form-group">
-            <input type="text" class="form-control" id="image-url-textbox" placeholder="Enter image url">
-            <img class="img-thumbnail" src="images/placeholder.jpg" id="image-thumbnail" style="margin:10px 0px; max-width:250px;">
+            <input type="text" class="form-control" id="image-url-textbox" placeholder="Enter image url" style="width:550px; margin: 0 auto;">
+            <div>
+            <img class="img-thumbnail" src="images/placeholder.jpg" id="image-thumbnail" style="margin:10px 0px; max-width:250px;display:inline-block;">
+            <div id="scores-res" style="display:inline-block;vertical-align: top;height: 100%;width: 250px;text-align: left;margin:10px 0px;">Results...</div>
+            </div>  
             <p id="result"></p>
         </div>
         <button type="submit" class="btn btn-primary">Read Me</button>
@@ -46,18 +49,25 @@
             thumb.setAttribute("src", url);
             var result = document.getElementById("result");
 
-            const scores = data[0].scores
-            var highScore = 0
-            var highKey = undefined
-            for (var key in scores) {
-                if (scores[key] > highScore) {
-                    highScore = scores[key]
-                    highKey = key
+            if(data[0]){
+                const scores = data[0].scores
+                var scoresStr = '';
+                var highScore = 0
+                var highKey = undefined
+                for (var key in scores) {
+                    scoresStr += key + ': ' + scores[key] + '<br>';
+                    if (scores[key] > highScore) {
+                        highScore = scores[key]
+                        highKey = key
+                    }
                 }
+                result.innerText = 'You appear to be feeling...' + highKey + '!';
+                document.getElementById("scores-res").innerHTML = scoresStr;
             }
-
-            result.innerText = 'You appear to be feeling...' + highKey + '!';
-            console.log(scores);
+            else{
+                alert("No faces found :("); 
+            }
+            console.log(data);
         })
         .fail(function(e) {
             alert('Error: ' + e.responseText);
