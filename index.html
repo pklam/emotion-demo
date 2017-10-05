@@ -66,6 +66,8 @@
             }
             else{
                 alert("No faces found :("); 
+                result.innerText = "I can't find you.";
+                document.getElementById("scores-res").innerHTML = 'none available'; 
             }
             console.log(data);
         })
